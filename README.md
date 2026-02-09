@@ -1,6 +1,6 @@
 # Social Media Scraper
 
-Multi-backend scraper for **Telegram** and **X.com (Twitter)** using **Apify cloud** and **Telethon**.
+Multi-backend scraper for **Telegram**, **X.com (Twitter)**, and **LinkedIn** using **Apify cloud** and **Telethon**.
 
 ## Scrapers
 
@@ -8,6 +8,7 @@ Multi-backend scraper for **Telegram** and **X.com (Twitter)** using **Apify clo
 |--------|----------|---------|----------|
 | `apify_telegram_scraper.py` | Telegram | Apify REST API | **Recommended** — Cloud-based, no personal credentials |
 | `apify_x_scraper.py` | X.com (Twitter) | Apify REST API | Scrape tweets by handle, search, or URL |
+| `apify_linkedin_scraper.py` | LinkedIn | Apify REST API | Scrape profile posts, reactions, media (no cookies) |
 | `unified_scraper.py` | Telegram | Auto (Apify / Telethon) | Hybrid — auto-selects best backend |
 | `scrape_telegram.py` | Telegram | Telethon | Private channels, personal account required |
 
@@ -75,6 +76,26 @@ python scripts/apify_x_scraper.py --search "web scraping" --max-tweets 10
 **Default X.com handles** (edit `DEFAULT_HANDLES` in `apify_x_scraper.py` to add more):
 - @stockstix, @Derzuschauer7, @adi408b, @rahul_saggi, @Suchitpatel, @vivekthebaria
 
+**LinkedIn Profile Posts Scraper:**
+
+```bash
+# Last 10 posts from a profile (default profile in script)
+python scripts/apify_linkedin_scraper.py
+
+# Specific profile, 5 posts
+python scripts/apify_linkedin_scraper.py --profiles kavishka-abeywardana-01b891214 --max-posts 5
+
+# Using full LinkedIn URL
+python scripts/apify_linkedin_scraper.py --profiles "https://www.linkedin.com/in/satyanadella" --max-posts 3
+
+# Multiple profiles, all output formats
+python scripts/apify_linkedin_scraper.py --profiles satyanadella billgates --max-posts 10 \
+  --out linkedin.csv --out-json linkedin.json --out-excel linkedin.xlsx
+```
+
+**Default LinkedIn profile** (edit `DEFAULT_PROFILES` in `apify_linkedin_scraper.py` to add more):
+- kavishka-abeywardana-01b891214
+
 **Unified Scraper:**
 
 ```bash
@@ -114,6 +135,12 @@ python scripts/scrape_telegram.py --channel channel_name --limit 1000 --out mess
 | `danek/twitter-scraper-ppr` | `--actor ppr` (default) | Reliable per-handle scraping |
 | `kaitoeasyapi/tweet-scraper` | `--actor search` | Search-based, pay-per-result |
 | `apidojo/tweet-scraper` | `--actor full` | Full-featured V2 (may need paid plan) |
+
+### LinkedIn Actors
+
+| Actor | Flag | Best For |
+|-------|------|----------|
+| `apimaestro/linkedin-profile-posts` | `--actor profile_posts` (default) | Profile posts with media, no cookies needed |
 
 ## Feature Comparison
 
