@@ -1,14 +1,15 @@
-# Telegram Scraper
+# Social Media Scraper
 
-Multi-backend Telegram channel scraper supporting **Apify cloud** and **Telethon** (personal account).
+Multi-backend scraper for **Telegram** and **X.com (Twitter)** using **Apify cloud** and **Telethon**.
 
 ## Scrapers
 
-| Script | Backend | Use Case |
-|--------|---------|----------|
-| `apify_telegram_scraper.py` | Apify REST API | **Recommended** — Cloud-based, no personal credentials |
-| `unified_scraper.py` | Auto (Apify / Telethon) | Hybrid — auto-selects best backend |
-| `scrape_telegram.py` | Telethon | Private channels, personal account required |
+| Script | Platform | Backend | Use Case |
+|--------|----------|---------|----------|
+| `apify_telegram_scraper.py` | Telegram | Apify REST API | **Recommended** — Cloud-based, no personal credentials |
+| `apify_x_scraper.py` | X.com (Twitter) | Apify REST API | Scrape tweets by handle, search, or URL |
+| `unified_scraper.py` | Telegram | Auto (Apify / Telethon) | Hybrid — auto-selects best backend |
+| `scrape_telegram.py` | Telegram | Telethon | Private channels, personal account required |
 
 ## Quick Start
 
@@ -54,6 +55,26 @@ python scripts/apify_telegram_scraper.py --channels channel_name --max-posts 200
 python scripts/apify_telegram_scraper.py --channels channel_name --actor posts --posts-from 1 --posts-to 500
 ```
 
+**X.com (Twitter) Scraper:**
+
+```bash
+# Last 3 tweets from default handles (edit DEFAULT_HANDLES in script to customize)
+python scripts/apify_x_scraper.py
+
+# Specific handles, 5 tweets each
+python scripts/apify_x_scraper.py --handles stockstix elonmusk --max-tweets 5
+
+# With all output formats
+python scripts/apify_x_scraper.py --handles adi408b rahul_saggi --max-tweets 3 \
+  --out tweets.csv --out-json tweets.json --out-excel tweets.xlsx
+
+# Search tweets
+python scripts/apify_x_scraper.py --search "web scraping" --max-tweets 10
+```
+
+**Default X.com handles** (edit `DEFAULT_HANDLES` in `apify_x_scraper.py` to add more):
+- @stockstix, @Derzuschauer7, @adi408b, @rahul_saggi, @Suchitpatel, @vivekthebaria
+
 **Unified Scraper:**
 
 ```bash
@@ -78,13 +99,21 @@ python scripts/scrape_telegram.py --channel channel_name --limit 1000 --out mess
 
 ## Apify Actor Backends
 
-The Apify scraper supports 3 actor backends:
+### Telegram Actors
 
 | Actor | Flag | Best For |
 |-------|------|----------|
 | `webfinity/telegram-channel-content-media-scraper-v2` | `--actor media` (default) | Quick scrapes, up to 200 posts, media support |
 | `danielmilevski9/telegram-channel-scraper` | `--actor posts` | Large scrapes with post range selection |
 | `cheapget/telegram-channel-message` | `--actor messages` | Date-filtered message extraction |
+
+### X.com (Twitter) Actors
+
+| Actor | Flag | Best For |
+|-------|------|----------|
+| `danek/twitter-scraper-ppr` | `--actor ppr` (default) | Reliable per-handle scraping |
+| `kaitoeasyapi/tweet-scraper` | `--actor search` | Search-based, pay-per-result |
+| `apidojo/tweet-scraper` | `--actor full` | Full-featured V2 (may need paid plan) |
 
 ## Feature Comparison
 
